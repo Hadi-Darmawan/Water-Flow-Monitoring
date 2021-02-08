@@ -74,45 +74,50 @@ public class HomeFragment extends Fragment {
 
         lineChart = view.findViewById(R.id.waterDiagram);
 
+        // Pengkondisian ini digunakan untuk mengecek koneksi internet apakah terhubung atau tidak
         if (InternetConnection.checkConnection(getContext())) {
-            // Its Available...
+            // Apabila internet tersedia
             lineChart.setNoDataText("Please wait...");
             lineChart.setNoDataTextColor(Color.BLACK);
             getData();
         } else {
-            // Not Available...
+            // Apabila internet tidak tersedia
             lineChart.setNoDataText("Can't Retrieve Data");
             lineChart.setNoDataTextColor(Color.BLACK);
-            connectionNotification();
+            connectionNotification(); // Memanggil class connectionNotification yg telah dibuat di bawah
         }
 
         return view;
     }
 
+    // Class ini digunakan untuk mengambil data dari Firebase Relatime Database untuk ditampilkan pada Home Fragment
     private void getData(){
-        databaseReference = FirebaseDatabase.getInstance().getReference("AIR");
+        databaseReference = FirebaseDatabase.getInstance().getReference("AIR"); // path: AIR diambil dari nama Table pada Firebase
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                // semua code dengan .clear() digunakan untuk membersihkan array agar
+                // ketika data yang di fatch dari firebase berbeda dengan data sebelumnya
+                // maka tidak akan terjadi error saat menampilkan data terbaru.
+                // Baik itu data yg diedit, di delete, maupun ditambahkan baru
                 waterModelList.clear();
                 barEntries.clear();
                 dateEntries.clear();
                 valueEntries.clear();
                 lineChart.refreshDrawableState();
 
+                // Digunakan untuk melakukan looping terhadap data dari firebase ke dalam model array list yang telah dibuat sebelumnya
                 for (DataSnapshot waterData: snapshot.getChildren()){
                     WaterModel waterModel = waterData.getValue(WaterModel.class);
                     waterModelList.add(waterModel);
                 }
 
-//                for (int i=0; i<waterModelList.size(); i++){
-//                    barEntries.add(new Entry(i, waterModelList.get(i).getValue()));
-//                    valueEntries.add(waterModelList.get(i).getValue());
-//                    dateEntries.add(waterModelList.get(i).getDateString());
-//                }
-
+                // Dilakukan pengecekan apabila length data nya lebih dari 11 data
+                // maka data yang tambil akan dibatasi menjadi hanya 11 data terbaru
                 if (waterModelList.size()>11){
                     for (int i=waterModelList.size()-12; i<waterModelList.size(); i++){
+                        // Perulangan ini digunakan untuk mengurutkan data secara desc
                         barEntries.add(new Entry(i-(waterModelList.size()-12), waterModelList.get(i).getValue()));
                         valueEntries.add(waterModelList.get(i).getValue());
                         String currentDateTime = waterModelList.get(i).getDateString();
@@ -125,6 +130,7 @@ public class HomeFragment extends Fragment {
                     }
                 } else {
                     for (int i=0; i<waterModelList.size(); i++){
+                        // Perulangan ini digunakan untuk mengurutkan data secara asc
                         barEntries.add(new Entry(i, waterModelList.get(i).getValue()));
                         valueEntries.add(waterModelList.get(i).getValue());
 
@@ -143,7 +149,6 @@ public class HomeFragment extends Fragment {
                 xAxis.setValueFormatter(new IndexAxisValueFormatter(dateEntries));
                 xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
                 xAxis.setGridColor(R.color.white);
-//                xAxis.setLabelRotationAngle(90f);
                 xAxis.setGranularity(1f);
                 xAxis.setGranularityEnabled(true);
                 xAxis.setTextSize(10);
@@ -160,11 +165,9 @@ public class HomeFragment extends Fragment {
                 lineData = new LineData(lineDataSet);
                 lineChart.getDescription().setText("");
                 lineChart.setPinchZoom(true);
-//                lineChart.setDrawGridBackground(false);
                 lineChart.notifyDataSetChanged();
                 lineChart.setData(lineData);
                 lineChart.invalidate();
-//                lineChart.setVisibleXRangeMaximum(3f);
             }
 
             @Override
@@ -174,6 +177,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    // Class ini digunakan untuk mengecek sambungan internet pada perangkat user
     private void connectionNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel =
