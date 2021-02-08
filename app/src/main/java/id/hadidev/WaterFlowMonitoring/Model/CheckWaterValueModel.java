@@ -1,5 +1,7 @@
 package id.hadidev.WaterFlowMonitoring.Model;
 
+// Class ini digunakan untuk menangkap data dari firebase realtime database
+// ketika akan dilakukan pengecekan level ketinggian air
 public class CheckWaterValueModel {
 
     Integer dateEpoch;
