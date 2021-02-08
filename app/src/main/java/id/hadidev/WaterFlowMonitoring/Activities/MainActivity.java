@@ -3,7 +3,6 @@ package id.hadidev.WaterFlowMonitoring.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -15,8 +14,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import id.hadidev.WaterFlowMonitoring.Fragments.HomeFragment;
 import id.hadidev.WaterFlowMonitoring.R;
@@ -28,39 +25,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawerLayout;
     private Intent intent;
-    private Integer waterValueLimitation;
-    LinearLayout settingWaterValue;
-    SwitchCompat bgNotification, fgNotification;
-    TextView bgNotificationStatus, fgNotificationStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.appToolbar);
         setSupportActionBar(toolbar);
 
+        // Digunakan untuk mendeklarasikan drawer pada halaman utama (MainActivity)
         drawerLayout = findViewById(R.id.drawerHome);
         NavigationView navigationView = findViewById(R.id.navView);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Digunakan untuk menambahkan menu toggle pada bagian pojok kiri layar
+        // sehingga drawer dapat di open dan di close dengan menekan tombol tersebut
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_open, R.string.navigation_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
         toggle.syncState();
 
+        // Digunakan ketika rotasi layar diubah, halaman yang tampil
+        // tidak berubah dan tetap pada halaman yang tengah di buka sebelummnya
+        // Jika code ini tidak ditambahkan maka ketika layar di rotate maka akan secara otomatis kembali ke kemu home
         if(savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,
                     new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.menuHome);
         }
 
-        defaultFgNotification();
+        defaultFgNotification(); // Digunakan untuk memanggil class defaultFgNotification yang telah dibuat di bawah
 
-        defaultBgNotification();
+        defaultBgNotification(); // Digunakan untuk memanggil class defaultBgNotification yang telah dibuat di bawah
 
-        defaultWaterLimitValue();
+        defaultWaterLimitValue(); // // Digunakan untuk memanggil class defaultWaterValue yang telah dibuat di bawah
 
     }
 
@@ -71,13 +71,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    // Class ini digunakan untuk mengaktifkan menu Notification Setting
+    // dan About US pada bagian pojok kanan atas layar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+
+            // Digunakan untuk melakukan melakukan switch antar
+            // halaman dari halaman utama (Main Activity)
+            // ke halaman Notification Setting
             case R.id.settingNotification:
                 intent = new Intent(MainActivity.this, NotificationSettingActivity.class);
                 startActivity(intent);
                 break;
+
+            // Digunakan untuk melakukan melakukan switch antar
+            // halaman dari halaman utama (Main Activity)
+            // ke halaman Notification Setting
             case R.id.aboutUs:
                 intent = new Intent(MainActivity.this, AboutUsActivity.class);
                 startActivity(intent);
@@ -86,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
+    // Class ini digunakan untuk menentukan halaman yang
+    // akan muncul ketika pilihan menu pada drawer di tekan
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -98,18 +110,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    // Class ini digunakan untuk mengatur fungsi tombol back pada aplikasi
     @Override
     public void onBackPressed(){
+        // Ketika menekan tombol back saat drawer terbuka maka tombol back tersebut akan menutup drawer
         if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
+        } else { // Dan ketika menekan tombol back saat drawer tidak terbuka maka aplikasi akan menutup atau keluar
             Intent fgNotificationIntent = new Intent(MainActivity.this, ForegroundNotificationService.class);
-            stopService(fgNotificationIntent);
-
+            stopService(fgNotificationIntent); // Digunakan untuk menghentikan service pada Foreground ketika apliksi di tutup
             super.onBackPressed();
         }
     }
 
+    // Class ini digunakan untuk mengecek apakah Foreground Notification di hidupkan atau dimatikan oleh user
+    // Jika di hidupkan maka Service untuk Foreground Notification akan dijalankan
     @Override
     protected void onStart() {
         super.onStart();
@@ -123,6 +138,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    // Class ini digunakan untuk mengecek apakah Foreground Notification di hidupkan atau dimatikan
+    // oleh user ketika aplikasi di hentikan atau dikeluarkan
+    // Jika di hidupkan maka Service untuk Background Notification akan dijalankan
     @Override
     protected void onStop() {
         Intent fgNotificationIntent = new Intent(MainActivity.this, ForegroundNotificationService.class);
@@ -139,6 +157,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onStop();
     }
 
+    // Class ini digunakan untuk mengatur default value dari Foreground Notification
+    // ketika value di Share Preference bernilai null
     private void defaultFgNotification() {
         SharedPreferences session = MainActivity.this.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = session.edit();
@@ -148,6 +168,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    // Class ini digunakan untuk mengatur default value dari Background Notification
+    // ketika value di Share Preference bernilai null
     private void defaultBgNotification() {
         SharedPreferences session = MainActivity.this.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = session.edit();
@@ -157,6 +179,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    // Class ini digunakan untuk mengatur default value dari water limit
+    // ketika value di Share Preference bernilai null
     private void defaultWaterLimitValue() {
         SharedPreferences session = MainActivity.this.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = session.edit();
@@ -166,54 +190,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
-//    private void checkWaterValue(){
-//        SharedPreferences session = MainActivity.this.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = session.edit();
-//        databaseReference = FirebaseDatabase.getInstance().getReference("AIR");
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                checkWaterValue.clear();
-//                for (DataSnapshot waterData: dataSnapshot.getChildren()){
-//                    CheckWaterValueModel checkWaterValueModel = waterData.getValue(CheckWaterValueModel.class);
-//                    checkWaterValue.add(checkWaterValueModel);
-//                }
-//
-//                for (int i = 0; i< checkWaterValue.size(); i++){
-//                    valueEntries.add(checkWaterValue.get(i).getValue());
-//                }
-//
-//                lastValue = (Integer) valueEntries.get(valueEntries.size()-1);
-//                if (session.getInt("WaterValue", 0) != lastValue) {
-//                    if (lastValue >250){
-//                        editor.putInt("WaterValue", lastValue);
-//                        editor.apply();
-//                        showNotification();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Toast.makeText(MainActivity.this, "Failed to Retrieved Data", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-//
-//    private void showNotification() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-//            NotificationChannel channel =
-//                    new NotificationChannel("ID", "Water Notification", NotificationManager.IMPORTANCE_DEFAULT);
-//            NotificationManager notificationManager = this.getSystemService(NotificationManager.class);
-//            notificationManager.createNotificationChannel(channel);
-//        }
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "ID")
-//                .setSmallIcon(R.drawable.ic_home)
-//                .setAutoCancel(true)
-//                .setContentTitle("Water Level to High")
-//                .setContentText("Water level passed the limit");
-//        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
-//        managerCompat.notify(999, builder.build());
-//    }
 }
