@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "291603103076",
+    "firebase_url": "https://water-monitoring-pdam-default-rtdb.firebaseio.com",
+    "project_id": "water-monitoring-pdam",
+    "storage_bucket": "water-monitoring-pdam.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291603103076:android:ce8725ab92ac599a680e71",
+        "android_client_info": {
+          "package_name": "com.e.watermonitoring"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "291603103076-gmh34gtbj481047687epg1nag7ipvpes.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8OkY1Ij8sAYgpUTmVlvEnGjv5MvfcFeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "291603103076-gmh34gtbj481047687epg1nag7ipvpes.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291603103076:android:d7255eeeeb3d2349680e71",
+        "android_client_info": {
+          "package_name": "id.ardev.waterflowmonitoring"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "291603103076-gmh34gtbj481047687epg1nag7ipvpes.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8OkY1Ij8sAYgpUTmVlvEnGjv5MvfcFeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "291603103076-gmh34gtbj481047687epg1nag7ipvpes.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291603103076:android:1de635c516df3f96680e71",
+        "android_client_info": {
+          "package_name": "id.hadidev.watermonitoring"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "291603103076-gmh34gtbj481047687epg1nag7ipvpes.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8OkY1Ij8sAYgpUTmVlvEnGjv5MvfcFeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "291603103076-gmh34gtbj481047687epg1nag7ipvpes.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
