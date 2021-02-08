@@ -40,13 +40,21 @@ public class NotificationSettingActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.appToolbar);
         setSupportActionBar(toolbar);
 
+        // Digunakan untuk menampilkan tanda panah back
+        // di bagian pojok kiri atas layar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        // Digunakan untuk memanggil
+        // class defaultFgNotification yang dibuat di bawah
         defaultFgNotification();
 
+        // Digunakan untuk memanggil
+        // class defaultBgNotification yang dibuat di bawah
         defaultBgNotification();
 
+        // Digunakan untuk memanggil
+        // class defaultWaterLimit yang dibuat di bawah
         defaultWaterLimitValue();
     }
 
@@ -60,10 +68,18 @@ public class NotificationSettingActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+
+            // Digunakan untuk menampilkan notifikasi jika user menekan kembali
+            // pilihan menu Notificaton Setting
+            // padahal user telah berada di menu about
             case R.id.settingNotification:
                 Toast.makeText(NotificationSettingActivity.this, "You're in Notification Setting Page", Toast.LENGTH_SHORT)
                         .show();
                 break;
+
+            // Digunakan untuk melakukan melakukan switch antar
+            // halaman dari halaman Notification Setting
+            // ke halaman About
             case R.id.aboutUs:
                 intent = new Intent(NotificationSettingActivity.this, AboutUsActivity.class);
                 startActivity(intent);
@@ -72,12 +88,21 @@ public class NotificationSettingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Class ini digunakan untuk mengatur notifikasi
+    // ketika aplikasi dikeluarkan ke foreground
     private void defaultFgNotification() {
-        SharedPreferences session = NotificationSettingActivity.this.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        SharedPreferences session = NotificationSettingActivity.this
+                .getSharedPreferences("MyPref", Context.MODE_PRIVATE); // Digunakan untuk mendeklarasikan Share Preferences
         SharedPreferences.Editor editor = session.edit();
 
+        // digunakan untuk mencari atau (find) id dari text view
+        // yang menunjukan status dari Foreground notification
         fgNotificationStatus = findViewById(R.id.fgNotificationStatus);
+
+        // Digunakan untuk mencari atau (find) id dari toggle switch
+        // yang digunakan untuk melakukan on off terhadap Foreground Notification
         fgNotification = findViewById(R.id.switchFgNotification);
+
         if (session.getString("fgNotification", "").equals("Disable")){
             fgNotification.setChecked(false);
             fgNotificationStatus.setText(session.getString("fgNotification", ""));
@@ -87,9 +112,10 @@ public class NotificationSettingActivity extends AppCompatActivity {
         } else if (session.getString("fgNotification", "").equals("")){
             fgNotification.setChecked(false);
             fgNotificationStatus.setText("Disable");
-            editor.putString("fgNotification", "Disable");
-            editor.apply();
+            editor.putString("fgNotification", "Disable"); // Digunakan untuk Memasukan String Disable dengan key fgNotification
+            editor.apply(); // Digunakan untuk melakukan appy string diatas ke Share Preferences
         }
+
         fgNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -106,12 +132,21 @@ public class NotificationSettingActivity extends AppCompatActivity {
         });
     }
 
+    // Class ini digunakan untuk mengatur notifikasi
+    // ketika aplikasi sedang berjalan atau dibuka
     private void defaultBgNotification() {
-        SharedPreferences session = NotificationSettingActivity.this.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        SharedPreferences session = NotificationSettingActivity.this.
+                getSharedPreferences("MyPref", Context.MODE_PRIVATE); // Digunakan untuk mendeklarasikan Share Preferences
         SharedPreferences.Editor editor = session.edit();
 
+        // digunakan untuk mencari atau (find) id dari text view
+        // yang menunjukan status dari Background notification
         bgNotificationStatus = findViewById(R.id.bgNotificationStatus);
+
+        // Digunakan untuk mencari atau (find) id dari toggle switch
+        // yang digunakan untuk melakukan on off terhadap Background Notification
         bgNotification = findViewById(R.id.switchBgNotification);
+
         if (session.getString("bgNotification", "").equals("Disable")){
             bgNotification.setChecked(false);
             bgNotificationStatus.setText(session.getString("bgNotification", ""));
@@ -121,32 +156,38 @@ public class NotificationSettingActivity extends AppCompatActivity {
         } else if (session.getString("bgNotification", "").equals("")){
             bgNotification.setChecked(true);
             bgNotificationStatus.setText("Enable");
-            editor.putString("bgNotification", "Enable");
-            editor.apply();
+            editor.putString("bgNotification", "Enable"); // Digunakan untuk Memasukan String Enable dengan key bgNotification
+            editor.apply(); // Digunakan untuk melakukan appy string diatas ke Share Preferences
         }
         bgNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (bgNotification.isChecked()){
-                    editor.putString("bgNotification", "Enable");
-                    editor.apply();
+                    editor.putString("bgNotification", "Enable"); // Digunakan untuk Memasukan String Enable dengan key bgNotification
+                    editor.apply(); // Digunakan untuk melakukan appy string diatas ke Share Preferences
                     bgNotificationStatus.setText(session.getString("bgNotification", ""));
                 } else {
-                    editor.putString("bgNotification", "Disable");
-                    editor.apply();
+                    editor.putString("bgNotification", "Disable"); // Digunakan untuk Memasukan String Disable dengan key bgNotification
+                    editor.apply(); // Digunakan untuk melakukan appy string diatas ke Share Preferences
                     bgNotificationStatus.setText(session.getString("bgNotification", ""));
                 }
             }
         });
     }
 
+    // Class ini digunakan untuk mengatur batas
+    // tingkat ketinggian minimal level air
     private void defaultWaterLimitValue() {
-        SharedPreferences session = NotificationSettingActivity.this.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+        SharedPreferences session = NotificationSettingActivity.this.
+                getSharedPreferences("MyPref", Context.MODE_PRIVATE); // Digunakan untuk mendeklarasikan Share Preferences
         SharedPreferences.Editor editor = session.edit();
 
-        waterValueRange = findViewById(R.id.waterValueRange);
+        waterValueRange = findViewById(R.id.waterValueRange); // Digunakan untuk menemukan id dari Text View water value range
+        // Digunakan untuk mengeset text pada Text View water value range dengan mengisinya menggunakan data pada Share Preference
         waterValueRange.setText(session.getString("WaterLimitValue", "") + " liter/second");
-        settingWaterValue = findViewById(R.id.settingWaterValue);
+        settingWaterValue = findViewById(R.id.settingWaterValue); // Digunakan untuk menemukan id dari tombol settring water value
+
+        // Code ini digunakan untuk menampilkan custom dialog box ketika tombol setting water value ditekan
         settingWaterValue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,10 +203,10 @@ public class NotificationSettingActivity extends AppCompatActivity {
                 alertDialog.setCancelable(true);
                 AlertDialog alert = alertDialog.create();
 
+                // Digunakan untuk menyimpan value yang diinput oleh user ke share preference menggunakan tombol Save
                 btnSaveWaterValue.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-//                        tvSetWaterValue.getText();
                         if (tvSetWaterValue.length()<1){
                             tvSetWaterValue.setError("Water value can't be empty");
                         } else {
@@ -175,13 +216,13 @@ public class NotificationSettingActivity extends AppCompatActivity {
                             } else {
                                 editor.putString("WaterLimitValue", tvSetWaterValue.getText().toString());
                                 editor.apply();
-//                                Toast.makeText(NotificationSettingActivity.this, String.valueOf(session.getInt("WaterLimitValue", 0)), Toast.LENGTH_SHORT).show();
                                 alert.dismiss();
                             }
                         }
                     }
                 });
 
+                // Digunakan untuk mengaktifkan tombol Cancel pada dialog
                 btnCancelSetWaterValue.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -189,6 +230,7 @@ public class NotificationSettingActivity extends AppCompatActivity {
                     }
                 });
 
+                // Digunakan untuk mengaktifkan tombol untuk megembalikan nilai default water value
                 btnSetDefaultWaterValue.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -198,6 +240,8 @@ public class NotificationSettingActivity extends AppCompatActivity {
                     }
                 });
 
+                // Digunakan untuk melakukan transparansi terhadap default dialog
+                // sehingga dapat ditumpul dengan custom dialog yang telah dibuat
                 alert.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 alert.show();
             }
